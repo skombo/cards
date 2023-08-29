@@ -1,5 +1,5 @@
-package com.buyrent.users.roles;
+package com.kombo.cards.users.entities;
 
 public enum Role {
-    ROLE_ADMIN,ROLE_MANAGER,ROLE_ASSISTANT,ROLE_CUSTOMER,ROLE_OWNER
+    ROLE_ADMIN,ROLE_MEMBER
 }

@@ -1,5 +1,6 @@
-package com.buyrent.users.roles;
+package com.kombo.cards.users.repository;
 
+import com.kombo.cards.users.entities.AuthorityEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
