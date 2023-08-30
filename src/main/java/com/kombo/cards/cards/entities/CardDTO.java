@@ -1,4 +1,4 @@
-package com.kombo.cards.cards;
+package com.kombo.cards.cards.entities;
 
 import lombok.Getter;
 import lombok.Setter;

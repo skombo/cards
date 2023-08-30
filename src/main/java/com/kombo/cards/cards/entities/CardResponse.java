@@ -1,4 +1,4 @@
-package com.kombo.cards.cards;
+package com.kombo.cards.cards.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardUpdate {
+public class CardResponse {
     private String name;
     private String color;
-    private String description;
-    private CardStatus status;
-
+    private  String description;
 }

@@ -1,16 +1,15 @@
-package com.kombo.cards.cards;
+package com.kombo.cards.cards.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class CardResponse {
+public class CardRequest {
     private String name;
     private String color;
     private  String description;
+
 }
