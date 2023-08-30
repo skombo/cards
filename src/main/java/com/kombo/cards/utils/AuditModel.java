@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuditModel implements Serializable {
+public abstract class AuditModel implements Serializable {
     @GeneratedValue
     @Id
     private Long id;
