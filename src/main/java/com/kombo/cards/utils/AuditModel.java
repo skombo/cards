@@ -38,6 +38,5 @@ public abstract class AuditModel implements Serializable {
     @LastModifiedDate
     @JsonIgnore
     private Date updatedAt;
-    private String publicId;
     private boolean active = Boolean.TRUE;
 }

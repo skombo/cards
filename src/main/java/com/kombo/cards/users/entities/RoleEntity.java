@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collection;
 @Entity
 @Getter
 @Setter
@@ -18,8 +17,4 @@ public class RoleEntity extends AuditModel {
     @Enumerated(EnumType.STRING)
     private Role name;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    @JoinTable(name = "roles_authorities", joinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "authorities_id", referencedColumnName = "id"))
-    private Collection<AuthorityEntity> authorities;
 }
