@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +21,20 @@ public class CardServiceImpl implements CardService {
     public CardDTO create(CardDTO card) {
         Optional<Card> toPersist=repository.findByNameIgnoreCase(card.getName());
         if(toPersist.isPresent()) throw new CardServiceException(ErrorMessages.CARD_ALREADY_EXISTS.getErrorMessage());
-        return null;
+        Card toSave=new Card();
+        toSave.setName(card.getName());
+        toSave.setDescription(card.getDescription());
+        toSave.setPublicId(UUID.randomUUID().toString());
+        toSave.setStatus(CardStatus.TO_DO);
+        Card created=repository.save(toSave);
+
+        CardDTO response= new CardDTO();
+        response.setCreatedAt(created.getCreatedAt());
+        response.setName(created.getName());
+        response.setDescription(created.getDescription());
+        response.setPublicId(created.getPublicId());
+        response.setColor(created.getColor());
+        return response;
     }
 
     @Override
