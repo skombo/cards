@@ -8,10 +8,7 @@ import com.kombo.cards.exception.CardServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -39,6 +36,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<CardDTO> findByColor(String color) {
+        List<Card>cards= repository.findByColor(color);
         return null;
     }
 

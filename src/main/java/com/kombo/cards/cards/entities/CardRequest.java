@@ -1,5 +1,7 @@
 package com.kombo.cards.cards.entities;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CardRequest {
+    @NotEmpty(message = "Name is Required")
+    @Pattern(regexp = "^#([A-Fa-f0-9]{6})$", flags = { Pattern.Flag.CASE_INSENSITIVE, Pattern.Flag.MULTILINE }, message = "The Color code is invalid.")
     private String name;
     private String color;
     private  String description;

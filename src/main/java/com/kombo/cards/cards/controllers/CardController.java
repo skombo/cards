@@ -6,6 +6,7 @@ import com.kombo.cards.cards.entities.CardResponse;
 import com.kombo.cards.cards.services.CardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class CardController {
     private  final CardService cardService;
     @PostMapping("/cards/create")
     @Operation(summary = "Create Card")
-    public ResponseEntity<CardResponse>create(@RequestBody CardRequest request){
+    public ResponseEntity<CardResponse>create(@RequestBody @Valid CardRequest request){
         CardDTO toCreate= new CardDTO();
         toCreate.setColor(request.getColor());
         toCreate.setDescription(request.getDescription());

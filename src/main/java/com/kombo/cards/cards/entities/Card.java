@@ -4,6 +4,9 @@ import com.kombo.cards.users.entities.User;
 import com.kombo.cards.utils.AuditModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +25,7 @@ public class Card extends AuditModel {
     private  String description;
     private String publicId;
     private CardStatus status=CardStatus.TO_DO;
+   @ManyToOne
+   @JoinColumn(name = "user_id")
    private User user;
 }
