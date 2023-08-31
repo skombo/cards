@@ -1,11 +1,13 @@
 package com.kombo.cards.cards.services;
-
 import com.kombo.cards.cards.entities.Card;
 import com.kombo.cards.cards.entities.CardDTO;
 import com.kombo.cards.cards.entities.CardStatus;
 import com.kombo.cards.cards.repository.CardRepository;
 import com.kombo.cards.exception.CardServiceException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -37,7 +39,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<CardDTO> findByColor(String color) {
-        List<Card>cards= repository.findByColor(color);
+        List<Card>cards= repository.findByColorIgnoreCase(color);
         List<CardDTO>responses= new ArrayList<>();
         for(Card card:cards){
             CardDTO cardDTO= new CardDTO();
@@ -52,7 +54,17 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<CardDTO> findByStatus(CardStatus status) {
-        return null;
+        List<Card>cards=repository.findByStatus(status);
+        List<CardDTO>response= new ArrayList<>();
+        for(Card card:cards){
+            CardDTO cardDTO= new CardDTO();
+            cardDTO.setPublicId(card.getPublicId());
+            cardDTO.setName(card.getName());
+            cardDTO.setColor(card.getColor());
+            cardDTO.setDescription(card.getDescription());
+            response.add(cardDTO);
+        }
+        return response;
     }
 
     @Override
@@ -62,6 +74,19 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<CardDTO> findAll(int page, int size) {
-        return null;
+        Pageable pageable= PageRequest.of(page, size);
+        Page<Card> cardPage=repository.findAll(pageable);
+        List<Card>cards=cardPage.getContent();
+        List<CardDTO>response= new ArrayList<>();
+        for(Card card:cards){
+            CardDTO cardDTO= new CardDTO();
+            cardDTO.setCreatedAt(card.getCreatedAt());
+            cardDTO.setName(card.getName());
+            cardDTO.setPublicId(card.getPublicId());
+            cardDTO.setColor(card.getColor());
+            response.add(cardDTO);
+        }
+
+        return response;
     }
 }
