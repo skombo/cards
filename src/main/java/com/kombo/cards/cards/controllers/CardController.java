@@ -1,9 +1,6 @@
 package com.kombo.cards.cards.controllers;
 
-import com.kombo.cards.cards.entities.CardDTO;
-import com.kombo.cards.cards.entities.CardRequest;
-import com.kombo.cards.cards.entities.CardResponse;
-import com.kombo.cards.cards.entities.CardStatus;
+import com.kombo.cards.cards.entities.*;
 import com.kombo.cards.cards.services.CardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +25,7 @@ public class CardController {
         toCreate.setColor(request.getColor());
         toCreate.setDescription(request.getDescription());
         toCreate.setName(request.getName());
-        CardDTO created=cardService.create(toCreate);
+        CardDTO created=cardService.create(userId,toCreate);
         CardResponse response= new CardResponse();
         response.setColor(created.getColor());
         response.setName(created.getName());
@@ -38,13 +35,13 @@ public class CardController {
     @Operation(summary = "Get All Cards By Color")
     @GetMapping("users/ids/{userId}/cards/colors/{color}/get")
     public ResponseEntity<List<CardResponse>>getAllByColor(@PathVariable String userId,@PathVariable String color){
-        List<CardDTO>cards=cardService.findByColor(color);
+        List<CardDTO>cards=cardService.findByColor(userId,color);
         return getListResponseEntity(cards);
     }
     @Operation(summary = "Get All Cards By Color")
     @GetMapping("users/ids/{userId}/cards/status/{status}/get")
 public ResponseEntity<List<CardResponse>>getAllByStatus(@PathVariable String userId,@PathVariable CardStatus status){
-        List<CardDTO>cards=cardService.findByStatus(status);
+        List<CardDTO>cards=cardService.findByStatus(userId,status);
         return getListResponseEntity(cards);
     }
     @Operation(summary = "Get All Cards")
@@ -54,6 +51,11 @@ public ResponseEntity<List<CardResponse>>getAll(int page, int size){
         return getListResponseEntity(cardDTOList);
 }
 
+@PutMapping("/users/ids/{userId}/cards/{cardId}/update")
+@Operation(summary = "Update Card")
+public ResponseEntity<CardResponse>Update(@PathVariable String userId, @PathVariable String cardId, @RequestBody CardUpdate updateRequest){
+
+}
     private ResponseEntity<List<CardResponse>> getListResponseEntity(List<CardDTO> cards) {
         if(cards.isEmpty())return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
         List<CardResponse>responses= new ArrayList<>();

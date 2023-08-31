@@ -2,6 +2,7 @@ package com.kombo.cards.cards.services;
 import com.kombo.cards.cards.entities.Card;
 import com.kombo.cards.cards.entities.CardDTO;
 import com.kombo.cards.cards.entities.CardStatus;
+import com.kombo.cards.cards.entities.CardUpdate;
 import com.kombo.cards.cards.repository.CardRepository;
 import com.kombo.cards.exception.CardServiceException;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 @Service
@@ -17,7 +17,7 @@ import java.util.*;
 public class CardServiceImpl implements CardService {
     private final CardRepository repository;
     @Override
-    public CardDTO create(CardDTO card) {
+    public CardDTO create(String userId,CardDTO card) {
         Optional<Card> toPersist=repository.findByNameIgnoreCase(card.getName());
         if(toPersist.isPresent()) throw new CardServiceException(ErrorMessages.CARD_ALREADY_EXISTS.getErrorMessage());
         Card toSave=new Card();
@@ -38,7 +38,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<CardDTO> findByColor(String color) {
+    public List<CardDTO> findByColor(String userId,String color) {
         List<Card>cards= repository.findByColorIgnoreCase(color);
         List<CardDTO>responses= new ArrayList<>();
         for(Card card:cards){
@@ -53,7 +53,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<CardDTO> findByStatus(CardStatus status) {
+    public List<CardDTO> findByStatus(String userId,CardStatus status) {
         List<Card>cards=repository.findByStatus(status);
         List<CardDTO>response= new ArrayList<>();
         for(Card card:cards){
@@ -68,7 +68,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<CardDTO> findByDate(Date date) {
+    public List<CardDTO> findByDate(String userId,Date date) {
         return null;
     }
 
@@ -88,5 +88,10 @@ public class CardServiceImpl implements CardService {
         }
 
         return response;
+    }
+
+    @Override
+    public CardDTO update(String userId, CardUpdate update) {
+        return null;
     }
 }
