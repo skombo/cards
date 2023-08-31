@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 public class CardController {
     private  final CardService cardService;
-    @PostMapping("/cards/create")
+    @PostMapping("users/ids/{userId}/cards/create")
     @Operation(summary = "Create Card")
-    public ResponseEntity<CardResponse>create(@RequestBody @Valid CardRequest request){
+    public ResponseEntity<CardResponse>create(@PathVariable String userId,@RequestBody @Valid CardRequest request){
         CardDTO toCreate= new CardDTO();
         toCreate.setColor(request.getColor());
         toCreate.setDescription(request.getDescription());
@@ -37,17 +36,23 @@ public class CardController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
     @Operation(summary = "Get All Cards By Color")
-    @GetMapping("cards/colors/{color}/get")
-    public ResponseEntity<List<CardResponse>>getAllByColor(@PathVariable String color){
+    @GetMapping("users/ids/{userId}/cards/colors/{color}/get")
+    public ResponseEntity<List<CardResponse>>getAllByColor(@PathVariable String userId,@PathVariable String color){
         List<CardDTO>cards=cardService.findByColor(color);
         return getListResponseEntity(cards);
     }
     @Operation(summary = "Get All Cards By Color")
-    @GetMapping("cards/status/{status}/get")
-public ResponseEntity<List<CardResponse>>getAllByStatus(@PathVariable CardStatus status){
+    @GetMapping("users/ids/{userId}/cards/status/{status}/get")
+public ResponseEntity<List<CardResponse>>getAllByStatus(@PathVariable String userId,@PathVariable CardStatus status){
         List<CardDTO>cards=cardService.findByStatus(status);
         return getListResponseEntity(cards);
     }
+    @Operation(summary = "Get All Cards")
+    @GetMapping("cards/get/all")
+public ResponseEntity<List<CardResponse>>getAll(int page, int size){
+        List<CardDTO>cardDTOList= cardService.findAll(page, size);
+        return getListResponseEntity(cardDTOList);
+}
 
     private ResponseEntity<List<CardResponse>> getListResponseEntity(List<CardDTO> cards) {
         if(cards.isEmpty())return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
