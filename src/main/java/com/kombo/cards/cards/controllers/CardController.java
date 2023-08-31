@@ -3,6 +3,7 @@ package com.kombo.cards.cards.controllers;
 import com.kombo.cards.cards.entities.CardDTO;
 import com.kombo.cards.cards.entities.CardRequest;
 import com.kombo.cards.cards.entities.CardResponse;
+import com.kombo.cards.cards.entities.CardStatus;
 import com.kombo.cards.cards.services.CardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,18 +40,28 @@ public class CardController {
     @GetMapping("cards/colors/{color}/get")
     public ResponseEntity<List<CardResponse>>getAllByColor(@PathVariable String color){
         List<CardDTO>cards=cardService.findByColor(color);
+        return getListResponseEntity(cards);
+    }
+    @Operation(summary = "Get All Cards By Color")
+    @GetMapping("cards/status/{status}/get")
+public ResponseEntity<List<CardResponse>>getAllByStatus(@PathVariable CardStatus status){
+        List<CardDTO>cards=cardService.findByStatus(status);
+        return getListResponseEntity(cards);
+    }
+
+    private ResponseEntity<List<CardResponse>> getListResponseEntity(List<CardDTO> cards) {
         if(cards.isEmpty())return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
         List<CardResponse>responses= new ArrayList<>();
         for(CardDTO cardDTO: cards){
             CardResponse response= new CardResponse();
-        response.setDescription(cardDTO.getDescription());
-        response.setColor(cardDTO.getColor());
-        response.setName(cardDTO.getName());
-        responses.add(response);
-        response.setPublicId(response.getPublicId());
+            response.setDescription(cardDTO.getDescription());
+            response.setColor(cardDTO.getColor());
+            response.setName(cardDTO.getName());
+            responses.add(response);
+            response.setPublicId(response.getPublicId());
         }
-         return  new ResponseEntity<>(responses,HttpStatus.OK);
-}
+        return  new ResponseEntity<>(responses,HttpStatus.OK);
+    }
 
 
 }
