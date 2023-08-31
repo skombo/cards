@@ -18,6 +18,7 @@ public class User extends AuditModel {
     private String firstName;
     private String lastName;
     private String otherNames;
+    private String publicId;
     @ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
