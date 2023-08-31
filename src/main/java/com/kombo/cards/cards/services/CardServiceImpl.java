@@ -37,7 +37,16 @@ public class CardServiceImpl implements CardService {
     @Override
     public List<CardDTO> findByColor(String color) {
         List<Card>cards= repository.findByColor(color);
-        return null;
+        List<CardDTO>responses= new ArrayList<>();
+        for(Card card:cards){
+            CardDTO cardDTO= new CardDTO();
+            cardDTO.setName(card.getName());
+            cardDTO.setColor(card.getName());
+            cardDTO.setDescription(card.getDescription());
+            cardDTO.setPublicId(cardDTO.getPublicId());
+               responses.add(cardDTO);
+        };
+        return responses;
     }
 
     @Override

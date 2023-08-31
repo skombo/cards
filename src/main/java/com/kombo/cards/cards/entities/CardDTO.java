@@ -7,6 +7,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class CardDTO {
     private String name;
     private String color;
