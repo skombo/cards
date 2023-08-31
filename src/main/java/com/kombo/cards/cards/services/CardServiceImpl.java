@@ -21,6 +21,7 @@ public class CardServiceImpl implements CardService {
         Card toSave=new Card();
         toSave.setName(card.getName());
         toSave.setDescription(card.getDescription());
+        toSave.setColor(card.getColor());
         toSave.setPublicId(UUID.randomUUID().toString());
         toSave.setStatus(CardStatus.TO_DO);
         Card created=repository.save(toSave);
