@@ -12,6 +12,6 @@ public interface CardService {
     List<CardDTO> findByColor(String userId,String color);
     List<CardDTO> findByStatus(String userId,CardStatus status);
     List<CardDTO>findByDate(String userId,Date date);
-    CardDTO update(String userId, CardUpdate update);
+    CardDTO update(String userId,String cardId, CardUpdate update);
     List<CardDTO>findAll(int page, int size);
 }

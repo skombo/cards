@@ -54,8 +54,17 @@ public ResponseEntity<List<CardResponse>>getAll(int page, int size){
 @PutMapping("/users/ids/{userId}/cards/{cardId}/update")
 @Operation(summary = "Update Card")
 public ResponseEntity<CardResponse>Update(@PathVariable String userId, @PathVariable String cardId, @RequestBody CardUpdate updateRequest){
-
+CardDTO cardDTO=cardService.update(userId,cardId,updateRequest);
+CardResponse response= new CardResponse();
+response.setName(cardDTO.getName());
+response.setDescription(cardDTO.getDescription());
+response.setColor(cardDTO.getColor());
+response.setPublicId(cardDTO.getPublicId());
+return  new ResponseEntity<>(response,HttpStatus.CREATED);
 }
+
+
+
     private ResponseEntity<List<CardResponse>> getListResponseEntity(List<CardDTO> cards) {
         if(cards.isEmpty())return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
         List<CardResponse>responses= new ArrayList<>();

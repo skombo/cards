@@ -5,6 +5,8 @@ import com.kombo.cards.cards.entities.CardStatus;
 import com.kombo.cards.cards.entities.CardUpdate;
 import com.kombo.cards.cards.repository.CardRepository;
 import com.kombo.cards.exception.CardServiceException;
+import com.kombo.cards.users.entities.User;
+import com.kombo.cards.users.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,16 +18,21 @@ import java.util.*;
 @AllArgsConstructor
 public class CardServiceImpl implements CardService {
     private final CardRepository repository;
+    private final UserService userService;
     @Override
     public CardDTO create(String userId,CardDTO card) {
+
         Optional<Card> toPersist=repository.findByNameIgnoreCase(card.getName());
         if(toPersist.isPresent()) throw new CardServiceException(ErrorMessages.CARD_ALREADY_EXISTS.getErrorMessage());
+        User user= userService.getById(userId);
+
         Card toSave=new Card();
         toSave.setName(card.getName());
         toSave.setDescription(card.getDescription());
         toSave.setColor(card.getColor());
         toSave.setPublicId(UUID.randomUUID().toString());
         toSave.setStatus(CardStatus.TO_DO);
+        toSave.setUser(user);
         Card created=repository.save(toSave);
 
         CardDTO response= new CardDTO();
@@ -39,7 +46,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<CardDTO> findByColor(String userId,String color) {
-        List<Card>cards= repository.findByColorIgnoreCase(color);
+        List<Card>cards= repository.findByColorIgnoreCaseAndUser_PublicId(color,userId);
         List<CardDTO>responses= new ArrayList<>();
         for(Card card:cards){
             CardDTO cardDTO= new CardDTO();
@@ -54,7 +61,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<CardDTO> findByStatus(String userId,CardStatus status) {
-        List<Card>cards=repository.findByStatus(status);
+        List<Card>cards=repository.findByStatusAndUser_PublicId(status,userId);
         List<CardDTO>response= new ArrayList<>();
         for(Card card:cards){
             CardDTO cardDTO= new CardDTO();
@@ -91,7 +98,22 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardDTO update(String userId, CardUpdate update) {
-        return null;
+    public CardDTO update(String userId,String cardId, CardUpdate update) {
+        Optional<Card>card=repository.findByPublicId(cardId);
+        if(card.isEmpty())throw new CardServiceException(ErrorMessages.CARD_NOT_FOUND.getErrorMessage());
+        Card toUpdate=card.get();
+        toUpdate.setName(update.getName());
+        toUpdate.setColor(update.getColor());
+        toUpdate.setStatus(update.getStatus());
+        toUpdate.setDescription(update.getDescription());
+        Card saved=repository.save(toUpdate);
+
+        CardDTO response= new CardDTO();
+        response.setColor(saved.getColor());
+        response.setName(saved.getName());
+        response.setDescription(saved.getDescription());
+        response.setPublicId(saved.getPublicId());
+        response.setCreatedAt(saved.getCreatedAt());
+        return response;
     }
 }

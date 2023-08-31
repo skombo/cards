@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface CardRepository extends JpaRepository<Card,Long> {
     Optional<Card> findByNameIgnoreCase(String name);
     List<Card> findByColorIgnoreCase(String color);
-    List<Card>findByStatus(CardStatus status);
+    Optional<Card>findByPublicId(String publicId);
+    List<Card>findByColorIgnoreCaseAndUser_PublicId(String color,String userId);
+    List<Card>findByStatusAndUser_PublicId(CardStatus status,String userId);
 
 }
