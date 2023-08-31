@@ -11,4 +11,5 @@ public interface CardService {
     List<CardDTO> findByColor(String color);
     List<CardDTO> findByStatus(CardStatus status);
     List<CardDTO>findByDate(Date date);
+    List<CardDTO>findAll(int page, int size);
 }
