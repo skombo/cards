@@ -11,8 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CardRequest {
     @NotEmpty(message = "Name is Required")
-    @Pattern(regexp = "^#([A-Fa-f0-9]{6})$", flags = { Pattern.Flag.CASE_INSENSITIVE, Pattern.Flag.MULTILINE }, message = "The Color code is invalid.")
     private String name;
+    @Pattern(regexp = "^#([A-Fa-f0-9]{6})$", flags = { Pattern.Flag.CASE_INSENSITIVE, Pattern.Flag.MULTILINE }, message = "The Color code is invalid.")
     private String color;
     private  String description;
 
