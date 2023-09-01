@@ -14,4 +14,5 @@ public interface CardService {
     List<CardDTO>findByDate(String userId,Date date);
     CardDTO update(String userId,String cardId, CardUpdate update);
     List<CardDTO>findAll(int page, int size);
+    void delete(String userId, String cardId);
 }

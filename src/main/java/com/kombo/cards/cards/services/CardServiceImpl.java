@@ -116,4 +116,9 @@ public class CardServiceImpl implements CardService {
         response.setCreatedAt(saved.getCreatedAt());
         return response;
     }
+
+    @Override
+    public void delete(String userId, String cardId) {
+        Optional<Card>card=repository.findByPublicId(cardId);
+    }
 }

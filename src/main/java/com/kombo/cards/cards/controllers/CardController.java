@@ -1,5 +1,4 @@
 package com.kombo.cards.cards.controllers;
-
 import com.kombo.cards.cards.entities.*;
 import com.kombo.cards.cards.services.CardService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,7 +61,11 @@ response.setColor(cardDTO.getColor());
 response.setPublicId(cardDTO.getPublicId());
 return  new ResponseEntity<>(response,HttpStatus.CREATED);
 }
+@DeleteMapping("users/ids/{userId}/cards/ids{cardId}/delete")
+public ResponseEntity<String>delete(@PathVariable String userId,  @PathVariable String cardId){
+cardService.delete(userId, cardId);
 
+}
 
 
     private ResponseEntity<List<CardResponse>> getListResponseEntity(List<CardDTO> cards) {
