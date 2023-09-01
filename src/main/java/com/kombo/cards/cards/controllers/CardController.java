@@ -64,7 +64,7 @@ return  new ResponseEntity<>(response,HttpStatus.CREATED);
 @DeleteMapping("users/ids/{userId}/cards/ids{cardId}/delete")
 public ResponseEntity<String>delete(@PathVariable String userId,  @PathVariable String cardId){
 cardService.delete(userId, cardId);
-
+    return null;
 }
 
 
