@@ -13,9 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -41,7 +39,7 @@ public class CardController {
 
     @Operation(summary = "Get All Cards By Color")
     @GetMapping("users/ids/{userId}/cards/colors/{color}/get")
-    public ResponseEntity<Map<String, Object>>getByColor(@PathVariable String userId, @PathVariable String color, @RequestBody PageSettings page){
+    public ResponseEntity<Map<String, Object>>getByColor(@PathVariable String userId, @PathVariable String color, PageSettings page){
         Pageable pageable= PageRequest.of(page.getPage(), page.getElementPerPage(),page.buildSort());
     Page<CardDTO>cardDTOS= cardService.findByColor(userId,color,pageable);
         Map<String, Object> response = convertToResponse(cardDTOS);
@@ -50,7 +48,7 @@ public class CardController {
     }
     @Operation(summary = "Get All Cards By Color")
     @GetMapping("users/ids/{userId}/cards/status/{status}/get")
-public ResponseEntity<Map<String, Object>>getAllByStatus(@PathVariable String userId,@PathVariable CardStatus status,@RequestBody PageSettings page){
+public ResponseEntity<Map<String, Object>>getAllByStatus(@PathVariable String userId,@PathVariable CardStatus status, PageSettings page){
 Pageable pageable=PageRequest.of(page.getPage(),page.getElementPerPage(),page.buildSort());
 Page<CardDTO>cardDTOS=cardService.findByStatus(userId,status,pageable);
 Map<String, Object> response = convertToResponse(cardDTOS);
@@ -58,9 +56,10 @@ return new ResponseEntity<>(response,HttpStatus.OK);
     }
     @Operation(summary = "Get All Cards")
     @GetMapping("cards/get/all")
-public ResponseEntity<Map<String, Object>>getAll(@RequestBody PageSettings page){
-        Pageable pageable=PageRequest.of(page.getPage(),page.getElementPerPage(),page.buildSort());
+public ResponseEntity<Map<String, Object>>getAll(PageSettings page){
+        Pageable pageable=PageRequest.of(page.getPage(), page.getElementPerPage(),page.buildSort());
         Page<CardDTO>cardDTOS=cardService.findAll(pageable);
+        System.err.println(cardDTOS);
         Map<String, Object> response = convertToResponse(cardDTOS);
         return new ResponseEntity<>(response,HttpStatus.OK);
 }
@@ -83,19 +82,6 @@ cardService.delete(userId, cardId);
 }
 
 
-//    private ResponseEntity<List<CardResponse>> getListResponseEntity(List<CardDTO> cards) {
-//        if(cards.isEmpty())return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        List<CardResponse>responses= new ArrayList<>();
-//        for(CardDTO cardDTO: cards){
-//            CardResponse response= new CardResponse();
-//            response.setDescription(cardDTO.getDescription());
-//            response.setColor(cardDTO.getColor());
-//            response.setName(cardDTO.getName());
-//            responses.add(response);
-//            response.setPublicId(response.getPublicId());
-//        }
-//        return  new ResponseEntity<>(responses,HttpStatus.OK);
-//    }
 
             private Map<String, Object> convertToResponse(final Page<CardDTO> responses) {
         Map<String, Object> response = new HashMap<>();

@@ -96,9 +96,12 @@ public class CardServiceImpl implements CardService {
     @Override
     public Page<CardDTO> findAll(Pageable pageable) {
         Page<Card> cardPage=repository.findAll(pageable);
+        System.err.println(cardPage.getContent().get(0).getColor());
+        List<Card>cards=cardPage.getContent();
         List<CardDTO>cardDTOList= new ArrayList<>();
         Page<CardDTO>response= new PageImpl<>(cardDTOList);
-        for(Card card: cardPage.getContent()){
+        for(Card card: cards){
+            System.err.println(card.getColor());
             CardDTO cardDTO= new CardDTO();
             cardDTO.setCreatedAt(card.getCreatedAt());
             cardDTO.setName(card.getName());
