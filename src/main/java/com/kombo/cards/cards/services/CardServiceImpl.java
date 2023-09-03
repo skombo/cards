@@ -10,6 +10,7 @@ import com.kombo.cards.users.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -48,7 +49,6 @@ public class CardServiceImpl implements CardService {
     public Page<CardDTO> findByColor(String userId, String color, Pageable pageable) {
         Page<Card>cards= repository.findByColorIgnoreCaseAndUser_PublicId(color,userId,pageable);
         List<CardDTO>cardDTOList= new ArrayList<>();
-        Page<CardDTO>responses= new PageImpl<>(cardDTOList);
         for(Card card:cards.getContent()){
             CardDTO cardDTO= new CardDTO();
             cardDTO.setName(card.getName());
@@ -57,6 +57,7 @@ public class CardServiceImpl implements CardService {
             cardDTO.setPublicId(cardDTO.getPublicId());
                cardDTOList.add(cardDTO);
         };
+        Page<CardDTO>responses= new PageImpl<>(cardDTOList);
         return responses;
     }
 
@@ -64,7 +65,6 @@ public class CardServiceImpl implements CardService {
     public Page<CardDTO> findByStatus(String userId,CardStatus status,Pageable pageable) {
         Page<Card>cards=repository.findByStatusAndUser_PublicId(status,userId,pageable);
         List<CardDTO>cardDTOList= new ArrayList<>();
-        Page<CardDTO>response= new PageImpl<>(cardDTOList);
         for(Card card:cards){
             CardDTO cardDTO= new CardDTO();
             cardDTO.setPublicId(card.getPublicId());
@@ -73,6 +73,7 @@ public class CardServiceImpl implements CardService {
             cardDTO.setDescription(card.getDescription());
             cardDTOList.add(cardDTO);
         }
+        Page<CardDTO>response= new PageImpl<>(cardDTOList);
         return response;
     }
 
@@ -80,7 +81,6 @@ public class CardServiceImpl implements CardService {
     public Page<CardDTO> findByDate(String userId,Date start,Date end,Pageable pageable) {
         Page<Card>cards=repository.findByCreatedAtBetweenAndUser_PublicId(start,end,userId,pageable);
         List<CardDTO>cardDTOList= new ArrayList<>();
-        Page<CardDTO>response= new PageImpl<>(cardDTOList);
         for(Card card:cards){
             CardDTO cardDTO= new CardDTO();
             cardDTO.setPublicId(card.getPublicId());
@@ -90,18 +90,16 @@ public class CardServiceImpl implements CardService {
             cardDTOList.add(cardDTO);
 
         }
+        Page<CardDTO>response= new PageImpl<>(cardDTOList);
         return response;
     }
 
     @Override
     public Page<CardDTO> findAll(Pageable pageable) {
         Page<Card> cardPage=repository.findAll(pageable);
-        System.err.println(cardPage.getContent().get(0).getColor());
         List<Card>cards=cardPage.getContent();
         List<CardDTO>cardDTOList= new ArrayList<>();
-        Page<CardDTO>response= new PageImpl<>(cardDTOList);
         for(Card card: cards){
-            System.err.println(card.getColor());
             CardDTO cardDTO= new CardDTO();
             cardDTO.setCreatedAt(card.getCreatedAt());
             cardDTO.setName(card.getName());
@@ -109,6 +107,8 @@ public class CardServiceImpl implements CardService {
             cardDTO.setColor(card.getColor());
             cardDTOList.add(cardDTO);
         }
+        Page<CardDTO>response= new PageImpl<>(cardDTOList);
+
         return response;
     }
 
