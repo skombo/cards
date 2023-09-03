@@ -83,19 +83,19 @@ cardService.delete(userId, cardId);
 }
 
 
-    private ResponseEntity<List<CardResponse>> getListResponseEntity(List<CardDTO> cards) {
-        if(cards.isEmpty())return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        List<CardResponse>responses= new ArrayList<>();
-        for(CardDTO cardDTO: cards){
-            CardResponse response= new CardResponse();
-            response.setDescription(cardDTO.getDescription());
-            response.setColor(cardDTO.getColor());
-            response.setName(cardDTO.getName());
-            responses.add(response);
-            response.setPublicId(response.getPublicId());
-        }
-        return  new ResponseEntity<>(responses,HttpStatus.OK);
-    }
+//    private ResponseEntity<List<CardResponse>> getListResponseEntity(List<CardDTO> cards) {
+//        if(cards.isEmpty())return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        List<CardResponse>responses= new ArrayList<>();
+//        for(CardDTO cardDTO: cards){
+//            CardResponse response= new CardResponse();
+//            response.setDescription(cardDTO.getDescription());
+//            response.setColor(cardDTO.getColor());
+//            response.setName(cardDTO.getName());
+//            responses.add(response);
+//            response.setPublicId(response.getPublicId());
+//        }
+//        return  new ResponseEntity<>(responses,HttpStatus.OK);
+//    }
 
             private Map<String, Object> convertToResponse(final Page<CardDTO> responses) {
         Map<String, Object> response = new HashMap<>();
