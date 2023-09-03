@@ -9,7 +9,7 @@ import com.kombo.cards.users.entities.User;
 import com.kombo.cards.users.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -45,57 +45,72 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<CardDTO> findByColor(String userId,String color) {
-        List<Card>cards= repository.findByColorIgnoreCaseAndUser_PublicId(color,userId);
-        List<CardDTO>responses= new ArrayList<>();
-        for(Card card:cards){
+    public Page<CardDTO> findByColor(String userId, String color, Pageable pageable) {
+        Page<Card>cards= repository.findByColorIgnoreCaseAndUser_PublicId(color,userId,pageable);
+        List<CardDTO>cardDTOList= new ArrayList<>();
+        Page<CardDTO>responses= new PageImpl<>(cardDTOList);
+        for(Card card:cards.getContent()){
             CardDTO cardDTO= new CardDTO();
             cardDTO.setName(card.getName());
             cardDTO.setColor(card.getName());
             cardDTO.setDescription(card.getDescription());
             cardDTO.setPublicId(cardDTO.getPublicId());
-               responses.add(cardDTO);
+               cardDTOList.add(cardDTO);
         };
         return responses;
     }
 
     @Override
-    public List<CardDTO> findByStatus(String userId,CardStatus status) {
-        List<Card>cards=repository.findByStatusAndUser_PublicId(status,userId);
-        List<CardDTO>response= new ArrayList<>();
+    public Page<CardDTO> findByStatus(String userId,CardStatus status,Pageable pageable) {
+        Page<Card>cards=repository.findByStatusAndUser_PublicId(status,userId,pageable);
+        List<CardDTO>cardDTOList= new ArrayList<>();
+        Page<CardDTO>response= new PageImpl<>(cardDTOList);
         for(Card card:cards){
             CardDTO cardDTO= new CardDTO();
             cardDTO.setPublicId(card.getPublicId());
             cardDTO.setName(card.getName());
             cardDTO.setColor(card.getColor());
             cardDTO.setDescription(card.getDescription());
-            response.add(cardDTO);
+            cardDTOList.add(cardDTO);
         }
         return response;
     }
 
     @Override
-    public List<CardDTO> findByDate(String userId,Date date) {
-        return null;
+    public Page<CardDTO> findByDate(String userId,Date start,Date end,Pageable pageable) {
+        Page<Card>cards=repository.findByCreatedAtBetweenAndUser_PublicId(start,end,userId,pageable);
+        List<CardDTO>cardDTOList= new ArrayList<>();
+        Page<CardDTO>response= new PageImpl<>(cardDTOList);
+        for(Card card:cards){
+            CardDTO cardDTO= new CardDTO();
+            cardDTO.setPublicId(card.getPublicId());
+            cardDTO.setName(card.getName());
+            cardDTO.setColor(card.getColor());
+            cardDTO.setDescription(card.getDescription());
+            cardDTOList.add(cardDTO);
+
+        }
+        return response;
     }
 
     @Override
-    public List<CardDTO> findAll(int page, int size) {
-        Pageable pageable= PageRequest.of(page, size);
+    public Page<CardDTO> findAll(Pageable pageable) {
         Page<Card> cardPage=repository.findAll(pageable);
-        List<Card>cards=cardPage.getContent();
-        List<CardDTO>response= new ArrayList<>();
-        for(Card card:cards){
+        List<CardDTO>cardDTOList= new ArrayList<>();
+        Page<CardDTO>response= new PageImpl<>(cardDTOList);
+        for(Card card: cardPage.getContent()){
             CardDTO cardDTO= new CardDTO();
             cardDTO.setCreatedAt(card.getCreatedAt());
             cardDTO.setName(card.getName());
             cardDTO.setPublicId(card.getPublicId());
             cardDTO.setColor(card.getColor());
-            response.add(cardDTO);
+            cardDTOList.add(cardDTO);
         }
-
         return response;
     }
+
+
+
 
     @Override
     public CardDTO update(String userId,String cardId, CardUpdate update) {
