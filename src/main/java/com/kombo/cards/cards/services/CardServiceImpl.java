@@ -138,5 +138,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public void delete(String userId, String cardId) {
         Optional<Card>card=repository.findByPublicId(cardId);
+        if(card.isEmpty()) throw new CardServiceException(ErrorMessages.CARD_NOT_FOUND.getErrorMessage());
+        repository.delete(card.get());
     }
 }
