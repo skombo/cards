@@ -81,7 +81,17 @@ cardService.delete(userId, cardId);
     return null;
 }
 
-
+@GetMapping("/cards/ids/{publicId}")
+public ResponseEntity<CardResponse>getByPublicId(@PathVariable String publicId){
+        CardDTO card=cardService.getByPublicId(publicId);
+        CardResponse response= new CardResponse();
+        response.setCreatedAt(card.getCreatedAt());
+        response.setPublicId(card.getPublicId());
+        response.setName(card.getName());
+        response.setDescription(card.getDescription());
+        response.setColor(card.getColor());
+return new ResponseEntity<>(response,HttpStatus.OK);
+}
 
             private Map<String, Object> convertToResponse(final Page<CardDTO> responses) {
         Map<String, Object> response = new HashMap<>();

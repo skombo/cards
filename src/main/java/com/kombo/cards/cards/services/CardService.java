@@ -15,7 +15,7 @@ public interface CardService {
     Page<CardDTO>findByStatus(String userId,CardStatus status,Pageable pageable);
     Page<CardDTO>findByDate(String userId,Date start,Date end,Pageable pageable);
     CardDTO update(String userId,String cardId, CardUpdate update);
-
+    CardDTO getByPublicId(String publicId);
     Page<CardDTO> findByColor(String userId, String color, Pageable pageable);
 
     Page<CardDTO>findAll(Pageable pageable);

@@ -46,6 +46,19 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public CardDTO getByPublicId(String publicId) {
+        Optional<Card>card=repository.findByPublicId(publicId);
+        if(card.isPresent()) throw new CardServiceException(ErrorMessages.CARD_NOT_FOUND.getErrorMessage());
+        Card persisted=card.get();
+        CardDTO response= new CardDTO();
+        response.setCreatedAt(persisted.getCreatedAt());
+        response.setPublicId(persisted.getPublicId());
+        response.setName(persisted.getName());
+        response.setDescription(persisted.getDescription());
+        return response;
+    }
+
+    @Override
     public Page<CardDTO> findByColor(String userId, String color, Pageable pageable) {
         Page<Card>cards= repository.findByColorIgnoreCaseAndUser_PublicId(color,userId,pageable);
         List<CardDTO>cardDTOList= new ArrayList<>();
