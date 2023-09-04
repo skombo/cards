@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
         public JwtAuthenticationResponse signup(SignUpRequest request) {
             var user = User.builder().firstName(request.getFirstName()).lastName(request.getLastName())
                     .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
-                    .role(Role.ROLE_MEMBER).build();
+                    .role(Role.MEMBER).build();
             userRepository.save(user);
             var jwt = jwtService.generateToken(user);
             return JwtAuthenticationResponse.builder().token(jwt).build();
