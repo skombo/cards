@@ -5,6 +5,9 @@ import com.kombo.cards.exception.UserServiceException;
 import com.kombo.cards.users.entities.User;
 import com.kombo.cards.users.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +18,18 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) {
+                return repository.findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            }
+        };
+    }
+
     @Override
     public User create(User user) {
         Optional<User> userOptional=repository.findByEmail(user.getEmail());
