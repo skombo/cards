@@ -1,4 +1,4 @@
-package com.kombo.cards.security;
+package com.kombo.cards.security.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

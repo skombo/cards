@@ -1,5 +1,6 @@
-package com.kombo.cards.security;
+package com.kombo.cards.security.jwt;
 
+import com.kombo.cards.security.jwt.JwtService;
 import com.kombo.cards.users.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

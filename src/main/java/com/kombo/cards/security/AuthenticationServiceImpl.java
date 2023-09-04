@@ -1,5 +1,7 @@
 package com.kombo.cards.security;
 
+import com.kombo.cards.security.jwt.JwtAuthenticationResponse;
+import com.kombo.cards.security.jwt.JwtService;
 import com.kombo.cards.users.entities.Role;
 import com.kombo.cards.users.entities.User;
 import com.kombo.cards.users.repository.UserRepository;

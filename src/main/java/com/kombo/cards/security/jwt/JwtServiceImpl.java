@@ -1,5 +1,6 @@
-package com.kombo.cards.security;
+package com.kombo.cards.security.jwt;
 
+import com.kombo.cards.security.jwt.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 @Service
-public class JwtServiceImpl implements JwtService{
+public class JwtServiceImpl implements JwtService {
 
 
     @Value("${token.signing.key}")

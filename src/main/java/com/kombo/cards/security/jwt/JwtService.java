@@ -1,4 +1,4 @@
-package com.kombo.cards.security;
+package com.kombo.cards.security.jwt;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
