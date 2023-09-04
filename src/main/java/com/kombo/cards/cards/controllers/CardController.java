@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class CardController {
     private  final CardService cardService;
+    @PreAuthorize("hasRole('ADMIN') or principal.publicId == #publicId")
     @PostMapping("users/ids/{userId}/cards/create")
     @Operation(summary = "Create Card")
     public ResponseEntity<CardResponse>create(@PathVariable String userId,@RequestBody @Valid CardRequest request){
@@ -36,7 +38,7 @@ public class CardController {
         response.setDescription(created.getDescription());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasRole('ADMIN') or principal.publicId == #publicId")
     @Operation(summary = "Get All Cards By Color")
     @GetMapping("users/ids/{userId}/cards/colors/{color}/get")
     public ResponseEntity<Map<String, Object>>getByColor(@PathVariable String userId, @PathVariable String color, PageSettings page){
@@ -46,6 +48,7 @@ public class CardController {
         return new ResponseEntity<>(response,HttpStatus.OK);
 
     }
+    @PreAuthorize("hasRole('ADMIN') or principal.publicId == #publicId")
     @Operation(summary = "Get All Cards By Color")
     @GetMapping("users/ids/{userId}/cards/status/{status}/get")
 public ResponseEntity<Map<String, Object>>getAllByStatus(@PathVariable String userId,@PathVariable CardStatus status, PageSettings page){
@@ -54,6 +57,7 @@ Page<CardDTO>cardDTOS=cardService.findByStatus(userId,status,pageable);
 Map<String, Object> response = convertToResponse(cardDTOS);
 return new ResponseEntity<>(response,HttpStatus.OK);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get All Cards")
     @GetMapping("cards/get/all")
 public ResponseEntity<Map<String, Object>>getAll(PageSettings page){
@@ -63,7 +67,7 @@ public ResponseEntity<Map<String, Object>>getAll(PageSettings page){
         Map<String, Object> response = convertToResponse(cardDTOS);
         return new ResponseEntity<>(response,HttpStatus.OK);
 }
-
+@PreAuthorize("hasRole('ADMIN') or principal.publicId == #publicId")
 @PutMapping("/users/ids/{userId}/cards/{cardId}/update")
 @Operation(summary = "Update Card")
 public ResponseEntity<CardResponse>Update(@PathVariable String userId, @PathVariable String cardId, @RequestBody CardUpdate updateRequest){
@@ -75,12 +79,13 @@ response.setColor(cardDTO.getColor());
 response.setPublicId(cardDTO.getPublicId());
 return  new ResponseEntity<>(response,HttpStatus.CREATED);
 }
+    @PreAuthorize("principal.publicId == #publicId")
 @DeleteMapping("users/ids/{userId}/cards/ids{cardId}/delete")
 public ResponseEntity<String>delete(@PathVariable String userId,  @PathVariable String cardId){
 cardService.delete(userId, cardId);
     return null;
 }
-
+@PreAuthorize("hasRole('ADMIN') or principal.publicId == #publicId")
 @GetMapping("/cards/ids/{publicId}")
 public ResponseEntity<CardResponse>getByPublicId(@PathVariable String publicId){
         CardDTO card=cardService.getByPublicId(publicId);
